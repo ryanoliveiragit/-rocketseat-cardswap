@@ -6,18 +6,40 @@ import * as zod from "zod";
 import { InputCard } from "./styles";
 
 interface CardInformations {
-  cardNumber: number;
+  cardNumber: string;
   titularName: string;
-  validity: number;
-  CVV: number;
+  validity: string;
+  CVV: string;
 }
 
 interface Cards {
   id: string;
   card: number;
   name: string;
-  validity: number;
+  validity: string;
   CVV: number;
+}
+
+function validateExpirationDate(value: string): boolean {
+  const regex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/; // regex para validar o formato mm/aa
+  if (!regex.test(value)) {
+    return false;
+  }
+  const parts = value.split("/");
+  const month = parseInt(parts[0], 10);
+  const year = parseInt(parts[1], 10);
+  const now = new Date();
+  const currentYear = now.getFullYear() % 100;
+  const currentMonth = now.getMonth() + 1;
+  return (
+    month >= 1 &&
+    month <= 12 &&
+    year >= currentYear &&
+    (year > currentYear || month >= currentMonth) &&
+    !isNaN(month) && // verifique se month é um número válido
+    !isNaN(year) && // verifique se year é um número válido
+    value === `${month.toString().padStart(2, "0")}/${year.toString().padStart(2, "0")}` // formate a string como "mm/aa"
+  );
 }
 
 const newCardValidationSchema = zod.object({
@@ -28,12 +50,11 @@ const newCardValidationSchema = zod.object({
       (val) => /^\d{16}$/.test(val.toString()),
       "Por favor insira um número de cartão de crédito válido"
     ),
-  validity: zod
-    .number()
-    .refine(
-      (val) => /^\d{4}$/.test(val.toString()),
-      "Por favor insira uma validade de cartão de crédito válida"
-    ),
+    validity: zod
+    .string()
+    .refine(validateExpirationDate, {
+      message: "Por favor insira uma validade de cartão de crédito válida no formato mm/aa",
+    }),
   CVV: zod
     .number()
     .refine(
@@ -90,7 +111,6 @@ export function Form() {
           id="validity"
           placeholder="mm/aa"
           {...register("validity", {
-            valueAsNumber: true,
             required: "O campo é obrigatório.",
             maxLength: 4, // limite máximo de caracteres
           })}

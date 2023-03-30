@@ -28,4 +28,9 @@ export const InputCard = styled.input`
   order: 1;
   align-self: stretch;
   flex-grow: 0;
+
+  :focus {
+    background-color: ${(props) => props.theme["gray-900"]};
+    
+  }
 `;
