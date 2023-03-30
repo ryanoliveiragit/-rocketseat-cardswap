@@ -14,7 +14,7 @@ export const InputCard = styled.input`
   height: 3rem;
 
   background-color: ${(props) => props.theme["gray-800"]};
-  color: ${(props) => props.theme["gray-50"]};
+  color: ${(props) => props.theme.white};
 
   font-style: normal;
   font-weight: 400;
@@ -66,7 +66,7 @@ export const CreditCard = styled.div`
     background: #111827;
 
     border: 1px solid #374151;
-    border-radius: 16px;
+    border-radius: 1rem;
 
     flex: none;
     order: 0;

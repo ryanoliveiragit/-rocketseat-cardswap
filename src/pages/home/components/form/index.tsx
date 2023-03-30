@@ -140,6 +140,8 @@ export function Form() {
       setName(inputValue.slice(0, 24));
     }
   }
+  console.log(errors)
+  console.log(card)
 
   function handlecreateNewCard(data: any) {
     const flag = validationCard();
