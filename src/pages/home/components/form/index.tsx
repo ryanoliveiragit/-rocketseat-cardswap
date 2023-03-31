@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 
-import { InputCard, ButtonSubmit, CreditCard, Name, CVV, Validity, Number } from "./styles";
+import { InputCard, ButtonSubmit, CreditCard, Name, CVV, Validity, Number, FormContainer, InputContainer, InputContainerFlex } from "./styles";
 import creaditCard from "../../../../assets/creaditCard.png";
 
 interface CardInformations {
@@ -66,6 +66,7 @@ const newCardValidationSchema = zod.object({
 });
 
 export function Form() {
+
   const [card, setCard] = useState<Cards[]>([]);
   const [cardNumber, setCardNumber] = useState("");
   const [validity, setValidity] = useState("");
@@ -101,6 +102,7 @@ export function Form() {
   const flag = validationCard();
   console.log(flag)
 
+  
   function handleCardNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
     const numberValue = event.target.value;
 
@@ -171,8 +173,9 @@ export function Form() {
         <CVV>{cvv}</CVV>
         <Validity>{validity}</Validity>
       </CreditCard>
-      <form onSubmit={handleSubmit(handlecreateNewCard)}>
-        <label>Número do cartão</label>
+      <FormContainer onSubmit={handleSubmit(handlecreateNewCard)}>
+       <InputContainer>
+       <label>Número do cartão</label>
         <InputCard
           value={cardNumber}
           id="card"
@@ -184,6 +187,10 @@ export function Form() {
           })}
           onChange={handleCardNumberChange}
         />
+       </InputContainer>
+
+        <InputContainerFlex>
+        <InputContainer>
         <label>Validade</label>
         <InputCard
           id="validity"
@@ -196,7 +203,9 @@ export function Form() {
           maxLength={5}
           onChange={handleValidityChange}
         />
-
+        </InputContainer>
+        
+        <InputContainer>
         <label>CVV</label>
         <InputCard
           id="CVV"
@@ -209,7 +218,11 @@ export function Form() {
           onChange={handleCvvChange}
           maxLength={3}
         />
-        <label>Nome do titular</label>
+        </InputContainer>
+        </InputContainerFlex>
+
+       <InputContainer>
+       <label>Nome do titular</label>
         <InputCard
           value={name}
           id="name"
@@ -218,10 +231,11 @@ export function Form() {
             required: "O campo é obrigatório.",
           })}
           onChange={handleNameChange} // Adiciona a função de controle do tamanho máximo de caracteres
-        />
+        /></InputContainer>
+
         <p>Seus dados estão seguros</p>
         <ButtonSubmit type="submit">Adicionar cartão</ButtonSubmit>
-      </form>
+      </FormContainer>
     </div>
   );
 }

@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const InputCard = styled.input`
   background-color: black;
   color: white;
-
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -13,12 +12,13 @@ export const InputCard = styled.input`
   width: 20.5rem;
   height: 3rem;
 
+  margin-top: .4rem;
   background-color: ${(props) => props.theme["gray-800"]};
   color: ${(props) => props.theme.white};
 
   font-style: normal;
   font-weight: 400;
-  font-size: 1rem;
+  font-size: 0.8rem;
   line-height: 24px;
 
   border: 1px solid ${(props) => props.theme["gray-700"]};
@@ -29,9 +29,15 @@ export const InputCard = styled.input`
   align-self: stretch;
   flex-grow: 0;
 
+  outline: none;
   :focus {
+    box-shadow: 0 0 0 2px ${(props) => props.theme['purple-400']};
     background-color: ${(props) => props.theme["gray-900"]};
   }
+
+  :invalid {
+  border-color: red;
+}
 `;
 
 export const ButtonSubmit = styled.button`
@@ -57,6 +63,10 @@ export const ButtonSubmit = styled.button`
 `
 
 export const CreditCard = styled.div`
+margin: 2.9rem;
+display: flex;
+align-items: center;
+justify-content: center;
   img {
     box-sizing: border-box;
 
@@ -75,15 +85,15 @@ export const CreditCard = styled.div`
 `
 export const Number = styled.p`
     position: absolute;
-    top: 5rem;
-    left: 3rem;
+    top: 8rem;
+    left: 5rem;
     color: white;
     z-index: 2;
 `
 export const Name = styled.p`
     position: absolute;
-    top: 7.9rem;
-    left: 3rem;
+    top: 10.5rem;
+    left: 5rem;
     color: white;
     z-index: 2;
 `
@@ -96,11 +106,32 @@ export const CVV = styled.p`
 `
 export const Validity = styled.p`
     position: absolute;
-    top: 7.9rem;
-    left: 13rem;
+    top: 10.5rem;
+    left: 16.5rem;
     color: white;
     z-index: 2;
 `
+export const FormContainer = styled.form`
+margin: 1.5rem;
 
+label {
+  font-size: .87rem;
+  line-height: 16px;
+  font-weight: 600;
+}
+`
+export const InputContainer = styled.div `
+  margin-top: 1.5rem;
+  gap: 20px;
+`
+export const InputContainerFlex = styled.div`
+background-color: red;
+width: 100%;
+display: flex;
+gap: 10px;
 
-
+input {
+  width: 10rem;
+  display: block;
+}
+`

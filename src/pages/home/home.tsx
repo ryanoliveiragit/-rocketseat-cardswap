@@ -1,7 +1,14 @@
+import { History } from "../history"
 import { Form } from "./components/form"
+import { BackgroundContainer } from "./styles"
 
 export function Home() {
     return (
-        <Form />
+        <>
+            <BackgroundContainer>
+                <Form />
+                <History />
+            </BackgroundContainer>
+        </>
     )
 }
