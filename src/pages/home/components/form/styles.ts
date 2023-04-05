@@ -125,7 +125,6 @@ export const InputContainer = styled.div `
   gap: 20px;
 `
 export const InputContainerFlex = styled.div`
-background-color: red;
 width: 100%;
 display: flex;
 gap: 10px;
