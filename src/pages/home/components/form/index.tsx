@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
+import InputMask from '.'
 
+import {RiErrorWarningLine} from 'react-icons/ri'
 import { InputCard, DadosSeguro, Sound, FlagCard, ButtonSubmit, CreditCard, Name, CVV, Validity, Number, FormContainer, InputContainer, InputContainerFlex } from "./styles";
 
 import creaditCard from "../../../../assets/creaditCard.png";
@@ -108,6 +110,8 @@ export function Form() {
   const flag = validationCard();
   console.log(flag)
 
+  let placeholderNumber :string = "0000 0000 0000 0000";
+  let placeholderValidity = '--/--'
 
   function handleCardNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
     const numberValue = event.target.value;
@@ -142,10 +146,10 @@ export function Form() {
   function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
     const inputValue = event.target.value;
 
-    if (inputValue.length <= 24) {
+    if (inputValue.length <= 16) {
       setName(inputValue);
     } else {
-      setName(inputValue.slice(0, 24));
+      setName(inputValue.slice(0, 16));
     }
   }
   console.log(errors)
@@ -174,13 +178,20 @@ export function Form() {
     <div>
       <CreditCard>
         <img src={creaditCard} alt="creditCard" />
-        <Number>{cardNumber}</Number>
+        <Number>{cardNumber !== '' ? cardNumber : placeholderNumber}</Number>
         <Name>{name}</Name>
         <CVV>{cvv}</CVV>
         <Validity>{validity}</Validity>
         <div>
           <FlagCard>
-            <img src={flagVisa} alt="flag" />
+            {flag === 'Visa' ?
+              <img src={flagVisa} alt="flag" />
+              : flag === 'Mastercard' ?
+              <img src={flagMastercard} alt="flagMaster" />
+              : flag === 'ELO' ? 
+              <img src={flagElo} alt="flagElo" />
+              : <RiErrorWarningLine size={24} fill={'#FB7185'}/>
+            }
           </FlagCard>
           <Sound>
             <img src={sound} alt="flag" />
@@ -193,7 +204,7 @@ export function Form() {
           <InputCard
             value={cardNumber}
             id="card"
-            placeholder="Número do cartão"
+            placeholder={placeholderNumber}
             {...register("cardNumber", {
               valueAsNumber: true,
               required: "O campo é obrigatório.",
@@ -208,7 +219,7 @@ export function Form() {
             <label>Validade</label>
             <InputCard
               id="validity"
-              placeholder="mm/aa"
+              placeholder={placeholderValidity}
               {...register("validity", {
                 required: "O campo é obrigatório.",
                 maxLength: 5, // limite máximo de caracteres
@@ -217,6 +228,14 @@ export function Form() {
               maxLength={5}
               onChange={handleValidityChange}
             />
+            <InputMask
+                  mask="999.999.999-99"
+                  value={cpf}
+                  onChange={(e) => setCpf(e.target.value)}
+                  placeholder="000.000.000-00"
+                >
+                  {(inputProps) => <input {...inputProps} type="text" />}
+            </InputMask>
           </InputContainer>
 
           <InputContainer>
