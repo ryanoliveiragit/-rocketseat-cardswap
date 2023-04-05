@@ -1,7 +1,13 @@
+import { useContext } from "react"
+import UserContext from "../../contexts/useContext"
+
 export function History() {
+    const { card } = useContext(UserContext);
+
     return (
         <div>
-            <p>sexo</p>
+            aa
+            <p>{card}</p>
         </div>
     )
 }

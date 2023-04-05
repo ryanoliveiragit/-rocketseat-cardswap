@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
@@ -32,6 +32,9 @@ import flagMastercard from "../../../../assets/flagMastercard.svg";
 import sound from "../../../../assets/sound.svg";
 import seguro from "../../../../assets/seguro.svg";
 
+import UserContext from "../../../../contexts/useContext";
+import { History } from "../../../history";
+
 interface CardInformations {
   cardNumber: string;
   titularName: string;
@@ -40,14 +43,6 @@ interface CardInformations {
   flag?: string;
 }
 
-interface Cards {
-  id: string;
-  card: number;
-  name: string;
-  validity: string;
-  CVV: number;
-  flag?: string;
-}
 
 function validateExpirationDate(value: string): boolean {
   const regex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/; // regex para validar o formato mm/aa
@@ -92,7 +87,10 @@ const newCardValidationSchema = zod.object({
 });
 
 export function Form() {
-  const [card, setCard] = useState<Cards[]>([]);
+  const {card, setCard} = useContext(useContext)
+  
+  
+  
   const [cardNumber, setCardNumber] = useState("");
   const [validity, setValidity] = useState("");
   const [cvv, setCVV] = useState("");
@@ -197,6 +195,7 @@ export function Form() {
   return (
     <BackgroundContainer>
     <Container>
+      <UserContext.Provider value={{card}}>
       <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
         <div>
           <CreditCard>
@@ -325,6 +324,9 @@ export function Form() {
         </DadosSeguro>
         <ButtonSubmit type="submit">Adicionar cartão</ButtonSubmit>
       </FormContainer>
+      
+      <History />
+      </UserContext.Provider>
     </Container>
     </BackgroundContainer>
   );
