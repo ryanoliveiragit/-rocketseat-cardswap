@@ -64,10 +64,11 @@ export const ButtonSubmit = styled.button`
 
 export const CreditCard = styled.div`
 margin: 2.9rem;
+position: relative;
 display: flex;
 align-items: center;
 justify-content: center;
-  img {
+  >img {
     box-sizing: border-box;
 
     width: 17.5rem;
@@ -85,15 +86,15 @@ justify-content: center;
 `
 export const Number = styled.p`
     position: absolute;
-    top: 8rem;
-    left: 5rem;
+    top: 5.2rem;
+    left: 2rem;
     color: white;
     z-index: 2;
 `
 export const Name = styled.p`
     position: absolute;
-    top: 10.5rem;
-    left: 5rem;
+    top: 7.7rem;
+    left: 2rem;
     color: white;
     z-index: 2;
 `
@@ -106,13 +107,17 @@ export const CVV = styled.p`
 `
 export const Validity = styled.p`
     position: absolute;
-    top: 10.5rem;
-    left: 16.5rem;
+    top: 7.7rem;
+    left: 13.5rem;
     color: white;
     z-index: 2;
 `
 export const FormContainer = styled.form`
 margin: 1.5rem;
+
+P {
+  color: red;
+}
 
 label {
   font-size: .87rem;
@@ -123,7 +128,42 @@ label {
 export const InputContainer = styled.div `
   margin-top: 1.5rem;
   gap: 20px;
+  div {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+  }
+
+  span {
+    font-size: .7rem;
+    font-weight: 700;
+    color: ${(props) => props.theme["gray-900"]};
+    background-color: ${(props) => props.theme["gray-300"]};
+    border-radius: 100%;
+    padding: .2em .3rem;
+  }
 `
+export const DadosSeguro = styled.div`
+margin: 1.5rem 0rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  p {
+
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 16px;
+
+color: ${(props) => props.theme["gray-200"]};
+flex: none;
+order: 1;
+flex-grow: 0;
+  }
+`
+
 export const InputContainerFlex = styled.div`
 width: 100%;
 display: flex;
@@ -133,4 +173,14 @@ input {
   width: 10rem;
   display: block;
 }
+`
+export const FlagCard = styled.div`
+  position: absolute;
+    top: 1.5rem;
+    left: 1.7rem;
+`
+export const Sound = styled.div`
+ position: absolute;
+    top: 1.5rem;
+    left: 14.7rem;
 `

@@ -3,8 +3,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 
-import { InputCard, ButtonSubmit, CreditCard, Name, CVV, Validity, Number, FormContainer, InputContainer, InputContainerFlex } from "./styles";
+import { InputCard, DadosSeguro, Sound, FlagCard, ButtonSubmit, CreditCard, Name, CVV, Validity, Number, FormContainer, InputContainer, InputContainerFlex } from "./styles";
+
 import creaditCard from "../../../../assets/creaditCard.png";
+import flagVisa from '../../../../assets/flagVisa.svg'
+import flagElo from '../../../../assets/flagElo.svg'
+import flagMastercard from '../../../../assets/flagMastercard.svg'
+import sound from '../../../../assets/sound.svg'
+import seguro from '../../../../assets/seguro.svg'
 
 interface CardInformations {
   cardNumber: string;
@@ -86,12 +92,12 @@ export function Form() {
   function validationCard() {
     const firstDigit = cardNumber.charAt(0);
     let flag = '';
-  
+
     if (firstDigit === '4') {
       flag = 'Visa';
     } else if (firstDigit === '2' || firstDigit === '5') {
       flag = 'Mastercard';
-    } else if (firstDigit ==='6') {
+    } else if (firstDigit === '6') {
       flag = 'ELO';
     } else {
       flag = 'Não indentificado';
@@ -102,7 +108,7 @@ export function Form() {
   const flag = validationCard();
   console.log(flag)
 
-  
+
   function handleCardNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
     const numberValue = event.target.value;
 
@@ -172,68 +178,83 @@ export function Form() {
         <Name>{name}</Name>
         <CVV>{cvv}</CVV>
         <Validity>{validity}</Validity>
+        <div>
+          <FlagCard>
+            <img src={flagVisa} alt="flag" />
+          </FlagCard>
+          <Sound>
+            <img src={sound} alt="flag" />
+          </Sound>
+        </div>
       </CreditCard>
       <FormContainer onSubmit={handleSubmit(handlecreateNewCard)}>
-       <InputContainer>
-       <label>Número do cartão</label>
-        <InputCard
-          value={cardNumber}
-          id="card"
-          placeholder="Número do cartão"
-          {...register("cardNumber", {
-            valueAsNumber: true,
-            required: "O campo é obrigatório.",
-            maxLength: 16, // limite máximo de caracteres
-          })}
-          onChange={handleCardNumberChange}
-        />
-       </InputContainer>
+        <InputContainer>
+          <label>Número do cartão</label>
+          <InputCard
+            value={cardNumber}
+            id="card"
+            placeholder="Número do cartão"
+            {...register("cardNumber", {
+              valueAsNumber: true,
+              required: "O campo é obrigatório.",
+              maxLength: 16, // limite máximo de caracteres
+            })}
+            onChange={handleCardNumberChange}
+          />
+        </InputContainer>
 
         <InputContainerFlex>
-        <InputContainer>
-        <label>Validade</label>
-        <InputCard
-          id="validity"
-          placeholder="mm/aa"
-          {...register("validity", {
-            required: "O campo é obrigatório.",
-            maxLength: 5, // limite máximo de caracteres
-            valueAsNumber: false,
-          })}
-          maxLength={5}
-          onChange={handleValidityChange}
-        />
-        </InputContainer>
-        
-        <InputContainer>
-        <label>CVV</label>
-        <InputCard
-          id="CVV"
-          placeholder="***"
-          {...register("CVV", {
-            valueAsNumber: true,
-            required: "O campo é obrigatório.",
-          })}
-          value={cvv}
-          onChange={handleCvvChange}
-          maxLength={3}
-        />
-        </InputContainer>
+          <InputContainer>
+            <label>Validade</label>
+            <InputCard
+              id="validity"
+              placeholder="mm/aa"
+              {...register("validity", {
+                required: "O campo é obrigatório.",
+                maxLength: 5, // limite máximo de caracteres
+                valueAsNumber: false,
+              })}
+              maxLength={5}
+              onChange={handleValidityChange}
+            />
+          </InputContainer>
+
+          <InputContainer>
+            <div>
+            <label>CVV</label>
+            <span>?</span>
+            </div>
+            <InputCard
+              id="CVV"
+              placeholder="***"
+              {...register("CVV", {
+                valueAsNumber: true,
+                required: "O campo é obrigatório.",
+              })}
+              value={cvv}
+              onChange={handleCvvChange}
+              maxLength={3}
+            />
+          </InputContainer>
         </InputContainerFlex>
 
-       <InputContainer>
-       <label>Nome do titular</label>
-        <InputCard
-          value={name}
-          id="name"
-          placeholder="Nome do titular"
-          {...register("titularName", {
-            required: "O campo é obrigatório.",
-          })}
-          onChange={handleNameChange} // Adiciona a função de controle do tamanho máximo de caracteres
-        /></InputContainer>
+        <InputContainer>
+          <label>Nome do titular</label>
+          <InputCard
+            value={name}
+            id="name"
+            placeholder="Nome do titular"
+            {...register("titularName", {
+              required: "O campo é obrigatório.",
+            })}
+            onChange={handleNameChange} // Adiciona a função de controle do tamanho máximo de caracteres
+          />
+        </InputContainer>
 
+        <DadosSeguro>
+          <img src={seguro} alt="" />
         <p>Seus dados estão seguros</p>
+        </DadosSeguro>
         <ButtonSubmit type="submit">Adicionar cartão</ButtonSubmit>
       </FormContainer>
     </div>

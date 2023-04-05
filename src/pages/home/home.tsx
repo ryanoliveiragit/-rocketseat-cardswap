@@ -7,7 +7,6 @@ export function Home() {
         <>
             <BackgroundContainer>
                 <Form />
-                <History />
             </BackgroundContainer>
         </>
     )

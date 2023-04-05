@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const BackgroundContainer = styled.div`
-    width: 100vw;
+    height: 100%;
     align-items: center;
     display: flex;
     justify-content: center;
