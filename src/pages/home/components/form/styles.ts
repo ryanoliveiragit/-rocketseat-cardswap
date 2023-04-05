@@ -1,5 +1,16 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  background-color: ${(props) => props.theme["gray-900"]};
+  border-radius: 8px;
+`
+export const BackgroundContainer = styled.div`
+    height: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+`
 export const InputCard = styled.input`
   background-color: black;
   color: white;
@@ -63,6 +74,13 @@ export const ButtonSubmit = styled.button`
 `;
 
 export const CreditCard = styled.div`
+  .placeholder {
+  color: ${(props) => props.theme["gray-300"]};
+  letter-spacing: 2px;
+  font-weight: 400;
+  font-size: .85rem;
+  opacity: .6;
+}
   margin: 2.9rem;
   position: relative;
   display: flex;
@@ -71,7 +89,7 @@ export const CreditCard = styled.div`
   > img {
     box-sizing: border-box;
 
-    width: 17.5rem;
+    width: 19em;
     height: 10.5rem;
 
     background: #111827;
@@ -106,7 +124,7 @@ export const CreditCard = styled.div`
 `;
 export const Number = styled.p`
   position: absolute;
-  top: 5.2rem;
+  top: 5rem;
   left: 2rem;
   color: white;
   z-index: 2;
@@ -120,7 +138,7 @@ export const Name = styled.p`
 `;
 export const CVV = styled.p`
   position: absolute;
-  top: .5rem;
+  top: .65rem;
   left: 9rem;
   color: white;
   z-index: 2;
@@ -130,12 +148,12 @@ export const CVV = styled.p`
 export const Validity = styled.p`
   position: absolute;
   top: 7.7rem;
-  left: 13.5rem;
+  left: 15.5rem;
   color: white;
   z-index: 2;
 `;
 export const FormContainer = styled.form`
-  margin: 1.5rem;
+  margin: 2.5rem;
 
   P {
     color: red;
@@ -203,7 +221,7 @@ export const FlagCard = styled.div`
 export const Sound = styled.div`
   position: absolute;
   top: 1.5rem;
-  left: 14.7rem;
+  left: 16.5rem;
 `;
 export const Reader = styled.div`
   background-color: ${(props) => props.theme["gray-900"]};

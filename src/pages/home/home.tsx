@@ -1,12 +1,14 @@
 import { History } from "../history"
 import { Form } from "./components/form"
 import { BackgroundContainer } from "./styles"
+import { Link } from "react-router-dom";
 
 export function Home() {
     return (
         <>
             <BackgroundContainer>
-                <Form />
+                <Link to="/Form">formulario</Link>
+                <Link to="/History">histórico</Link>
             </BackgroundContainer>
         </>
     )

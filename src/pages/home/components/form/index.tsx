@@ -21,6 +21,8 @@ import {
   InputContainerFlex,
   Reader,
   ContainerCVV,
+  Container,
+  BackgroundContainer,
 } from "./styles";
 
 import creaditCard from "../../../../assets/creaditCard.png";
@@ -127,7 +129,8 @@ export function Form() {
   console.log(flag);
 
   let placeholderNumber: string = "0000 0000 0000 0000";
-  let placeholderValidity = "--/--";
+  let placeholderValidity: string = "--/--";
+  let placeholderName: string = 'Seu nome aqui'
 
   function handleCardNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
     const numberValue = event.target.value;
@@ -192,16 +195,17 @@ export function Form() {
     console.log(card);
   }
   return (
-    <div>
+    <BackgroundContainer>
+    <Container>
       <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
         <div>
           <CreditCard>
             <img src={creaditCard} alt="creditCard" />
             <Number>
-              {cardNumber !== "" ? cardNumber : placeholderNumber}
+              {cardNumber !== "" ? cardNumber : <span className="placeholder">{placeholderNumber}</span>}
             </Number>
-            <Name>{name}</Name>
-            <Validity>{validity}</Validity>
+            <Name> {name !== "" ? name : <span className="placeholder">{placeholderName}</span>}</Name>
+            <Validity>{validity !== "" ? validity : <span className="placeholder">{placeholderValidity}</span>}</Validity>
             <div>
               <FlagCard>
                 {flag === "Visa" ? (
@@ -211,10 +215,12 @@ export function Form() {
                 ) : flag === "ELO" ? (
                   <img src={flagElo} alt="flagElo" />
                 ) : (
-                  <RiErrorWarningLine size={24} fill={"#71fbbb"} />
+                  <RiErrorWarningLine size={24} fill={"#FB7185"} />
                 )}
               </FlagCard>
-              <Sound />
+              <Sound>
+                <img src={sound} alt="flagSound" />
+              </Sound>
             </div>
           </CreditCard>
         </div>
@@ -230,7 +236,7 @@ export function Form() {
                 ) : flag === "ELO" ? (
                   <img src={flagElo} alt="flagElo" />
                 ) : (
-                  <RiErrorWarningLine size={24} fill={"#71fbbb"} />
+                  <RiErrorWarningLine size={24} fill={"#FB7185"} />
                 )}
               </FlagCard>
               <Reader />
@@ -319,6 +325,7 @@ export function Form() {
         </DadosSeguro>
         <ButtonSubmit type="submit">Adicionar cartão</ButtonSubmit>
       </FormContainer>
-    </div>
+    </Container>
+    </BackgroundContainer>
   );
 }
