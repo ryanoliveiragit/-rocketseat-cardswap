@@ -2,17 +2,33 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
-import InputMask from '.'
+import ReactCardFlip from "react-card-flip";
 
-import {RiErrorWarningLine} from 'react-icons/ri'
-import { InputCard, DadosSeguro, Sound, FlagCard, ButtonSubmit, CreditCard, Name, CVV, Validity, Number, FormContainer, InputContainer, InputContainerFlex } from "./styles";
+import { RiErrorWarningLine } from "react-icons/ri";
+import {
+  InputCard,
+  DadosSeguro,
+  Sound,
+  FlagCard,
+  ButtonSubmit,
+  CreditCard,
+  Name,
+  CVV,
+  Validity,
+  Number,
+  FormContainer,
+  InputContainer,
+  InputContainerFlex,
+  Reader,
+  ContainerCVV,
+} from "./styles";
 
 import creaditCard from "../../../../assets/creaditCard.png";
-import flagVisa from '../../../../assets/flagVisa.svg'
-import flagElo from '../../../../assets/flagElo.svg'
-import flagMastercard from '../../../../assets/flagMastercard.svg'
-import sound from '../../../../assets/sound.svg'
-import seguro from '../../../../assets/seguro.svg'
+import flagVisa from "../../../../assets/flagVisa.svg";
+import flagElo from "../../../../assets/flagElo.svg";
+import flagMastercard from "../../../../assets/flagMastercard.svg";
+import sound from "../../../../assets/sound.svg";
+import seguro from "../../../../assets/seguro.svg";
 
 interface CardInformations {
   cardNumber: string;
@@ -50,7 +66,7 @@ function validateExpirationDate(value: string): boolean {
     !isNaN(month) && // verifique se month é um número válido
     !isNaN(year) && // verifique se year é um número válido
     value ===
-    `${month.toString().padStart(2, "0")}/${year.toString().padStart(2, "0")}` // formate a string como "mm/aa"
+      `${month.toString().padStart(2, "0")}/${year.toString().padStart(2, "0")}` // formate a string como "mm/aa"
   );
 }
 const newCardValidationSchema = zod.object({
@@ -74,12 +90,12 @@ const newCardValidationSchema = zod.object({
 });
 
 export function Form() {
-
   const [card, setCard] = useState<Cards[]>([]);
   const [cardNumber, setCardNumber] = useState("");
   const [validity, setValidity] = useState("");
   const [cvv, setCVV] = useState("");
   const [name, setName] = useState("");
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const { register, handleSubmit, formState, reset } =
     useForm<CardInformations>({
@@ -93,25 +109,25 @@ export function Form() {
 
   function validationCard() {
     const firstDigit = cardNumber.charAt(0);
-    let flag = '';
+    let flag = "";
 
-    if (firstDigit === '4') {
-      flag = 'Visa';
-    } else if (firstDigit === '2' || firstDigit === '5') {
-      flag = 'Mastercard';
-    } else if (firstDigit === '6') {
-      flag = 'ELO';
+    if (firstDigit === "4") {
+      flag = "Visa";
+    } else if (firstDigit === "2" || firstDigit === "5") {
+      flag = "Mastercard";
+    } else if (firstDigit === "6") {
+      flag = "ELO";
     } else {
-      flag = 'Não indentificado';
+      flag = "Não indentificado";
     }
 
-    return (flag)
+    return flag;
   }
   const flag = validationCard();
-  console.log(flag)
+  console.log(flag);
 
-  let placeholderNumber :string = "0000 0000 0000 0000";
-  let placeholderValidity = '--/--'
+  let placeholderNumber: string = "0000 0000 0000 0000";
+  let placeholderValidity = "--/--";
 
   function handleCardNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
     const numberValue = event.target.value;
@@ -126,10 +142,11 @@ export function Form() {
   function handleCvvChange(event: React.ChangeEvent<HTMLInputElement>) {
     const cvvValue = event.target.value;
 
-    if (cvvValue.length <= 16) {
-      setCVV(cvvValue);
+    if (cvvValue.length <= 4) {
+      setCVV(cvvValue.replace(/./g, "*"));
+      setCVV(cvvValue)
     } else {
-      setCVV(cvvValue.slice(0, 16));
+      setCVV(cvvValue.slice(0, 4));
     }
   }
 
@@ -152,8 +169,8 @@ export function Form() {
       setName(inputValue.slice(0, 16));
     }
   }
-  console.log(errors)
-  console.log(card)
+  console.log(errors);
+  console.log(card);
 
   function handlecreateNewCard(data: any) {
     const flag = validationCard();
@@ -167,7 +184,7 @@ export function Form() {
     };
 
     setCard((state) => [...state, newCard]);
-    validationCard()
+    validationCard();
     reset();
     setCardNumber("");
     setName("");
@@ -176,32 +193,61 @@ export function Form() {
   }
   return (
     <div>
-      <CreditCard>
-        <img src={creaditCard} alt="creditCard" />
-        <Number>{cardNumber !== '' ? cardNumber : placeholderNumber}</Number>
-        <Name>{name}</Name>
-        <CVV>{cvv}</CVV>
-        <Validity>{validity}</Validity>
+      <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
         <div>
-          <FlagCard>
-            {flag === 'Visa' ?
-              <img src={flagVisa} alt="flag" />
-              : flag === 'Mastercard' ?
-              <img src={flagMastercard} alt="flagMaster" />
-              : flag === 'ELO' ? 
-              <img src={flagElo} alt="flagElo" />
-              : <RiErrorWarningLine size={24} fill={'#FB7185'}/>
-            }
-          </FlagCard>
-          <Sound>
-            <img src={sound} alt="flag" />
-          </Sound>
+          <CreditCard>
+            <img src={creaditCard} alt="creditCard" />
+            <Number>
+              {cardNumber !== "" ? cardNumber : placeholderNumber}
+            </Number>
+            <Name>{name}</Name>
+            <Validity>{validity}</Validity>
+            <div>
+              <FlagCard>
+                {flag === "Visa" ? (
+                  <img src={flagVisa} alt="flag" />
+                ) : flag === "Mastercard" ? (
+                  <img src={flagMastercard} alt="flagMaster" />
+                ) : flag === "ELO" ? (
+                  <img src={flagElo} alt="flagElo" />
+                ) : (
+                  <RiErrorWarningLine size={24} fill={"#71fbbb"} />
+                )}
+              </FlagCard>
+              <Sound />
+            </div>
+          </CreditCard>
         </div>
-      </CreditCard>
+        <div onClick={() => setIsFlipped(!isFlipped)}>
+          <CreditCard>
+            <img src={creaditCard} alt="creditCard" />
+            <div>
+              <FlagCard>
+                {flag === "Visa" ? (
+                  <img src={flagVisa} alt="flag" />
+                ) : flag === "Mastercard" ? (
+                  <img src={flagMastercard} alt="flagMaster" />
+                ) : flag === "ELO" ? (
+                  <img src={flagElo} alt="flagElo" />
+                ) : (
+                  <RiErrorWarningLine size={24} fill={"#71fbbb"} />
+                )}
+              </FlagCard>
+              <Reader />
+              <ContainerCVV>
+              <CVV>{cvv.replace(/./g, "*")}</CVV>
+              </ContainerCVV>
+              <h2>CVV</h2>
+            </div>
+          </CreditCard>
+        </div>
+      </ReactCardFlip>
       <FormContainer onSubmit={handleSubmit(handlecreateNewCard)}>
+        <div onClick={() => setIsFlipped(!isFlipped)}></div>
         <InputContainer>
           <label>Número do cartão</label>
           <InputCard
+            onClick={() => setIsFlipped(false)}
             value={cardNumber}
             id="card"
             placeholder={placeholderNumber}
@@ -218,6 +264,7 @@ export function Form() {
           <InputContainer>
             <label>Validade</label>
             <InputCard
+              onClick={() => setIsFlipped(false)}
               id="validity"
               placeholder={placeholderValidity}
               {...register("validity", {
@@ -227,25 +274,20 @@ export function Form() {
               })}
               maxLength={5}
               onChange={handleValidityChange}
-            />
-            <InputMask
-                  mask="999.999.999-99"
-                  value={cpf}
-                  onChange={(e) => setCpf(e.target.value)}
-                  placeholder="000.000.000-00"
-                >
-                  {(inputProps) => <input {...inputProps} type="text" />}
-            </InputMask>
+            ></InputCard>
           </InputContainer>
 
           <InputContainer>
             <div>
-            <label>CVV</label>
-            <span>?</span>
+              <label>CVV</label>
+              <span>?</span>
             </div>
             <InputCard
+              onClick={() => setIsFlipped(true)}
               id="CVV"
               placeholder="***"
+              type="password"
+              
               {...register("CVV", {
                 valueAsNumber: true,
                 required: "O campo é obrigatório.",
@@ -260,6 +302,7 @@ export function Form() {
         <InputContainer>
           <label>Nome do titular</label>
           <InputCard
+            onClick={() => setIsFlipped(false)}
             value={name}
             id="name"
             placeholder="Nome do titular"
@@ -272,7 +315,7 @@ export function Form() {
 
         <DadosSeguro>
           <img src={seguro} alt="" />
-        <p>Seus dados estão seguros</p>
+          <p>Seus dados estão seguros</p>
         </DadosSeguro>
         <ButtonSubmit type="submit">Adicionar cartão</ButtonSubmit>
       </FormContainer>
