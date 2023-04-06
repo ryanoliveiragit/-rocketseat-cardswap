@@ -6,24 +6,28 @@ import { BrowserRouter } from 'react-router-dom'
 import { Router } from './routes/index'
 import UserContext from "./contexts/useContext";
 import { useState } from "react";
+import { History } from "./pages/history";
+import { Form } from "./pages/home/components/form";
 
-interface Cards {
+export interface Cards {
   id: string;
   card: number;
+  setCard: any;
   name: string;
   validity: string;
   CVV: number;
   flag?: string;
 }
 export function App() {
+
   const [card, setCard] = useState<Cards[]>([]);
   
   return (
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
       <UserContext.Provider value={{card, setCard}}>
-        <Router />
-        <Home />
+        <Form />
+        <History />
         </UserContext.Provider>
       </BrowserRouter>
       <GlobalStyle />

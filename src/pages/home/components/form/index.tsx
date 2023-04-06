@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
@@ -46,6 +46,7 @@ interface CardInformations {
 interface Cards {
   id: string;
   card: number;
+  setCard: any;
   name: string;
   validity: string;
   CVV: number;
@@ -95,7 +96,8 @@ const newCardValidationSchema = zod.object({
 });
 
 export function Form() {
-  const {card, setCard}: any = useContext(UserContext)
+
+  const {card, setCard}: any = useContext(UserContext);
   
   const [cardNumber, setCardNumber] = useState("");
   const [validity, setValidity] = useState("");
@@ -126,9 +128,9 @@ export function Form() {
     } else {
       flag = "Não indentificado";
     }
-
     return flag;
   }
+
   const flag = validationCard();
   console.log(flag);
 
@@ -187,6 +189,7 @@ export function Form() {
       validity: data.validity,
       CVV: data.CVV,
       flag: flag.toString(),
+      setCard: undefined
     };
 
     setCard((state: any) => [...state, newCard]);
@@ -195,8 +198,9 @@ export function Form() {
     setCardNumber("");
     setName("");
     setCVV(""); // Limpa o campo "cardNumber"
-    console.log(card);
   }
+
+  console.log(card);
   return (
     <BackgroundContainer>
     <Container>
@@ -319,7 +323,7 @@ export function Form() {
             {...register("titularName", {
               required: "O campo é obrigatório.",
             })}
-            onChange={handleNameChange} // Adiciona a função de controle do tamanho máximo de caracteres
+            onChange={handleNameChange} //Adiciona a função de controle do tamanho máximo de caracteres
           />
         </InputContainer>
 
@@ -327,9 +331,8 @@ export function Form() {
           <img src={seguro} alt="" />
           <p>Seus dados estão seguros</p>
         </DadosSeguro>
-        <ButtonSubmit type="submit">Adicionar cartão</ButtonSubmit>
+        <ButtonSubmit type="button" onClick={handleSubmit(handlecreateNewCard)}>Adicionar cartão</ButtonSubmit>
       </FormContainer>
-  
       </UserContext.Provider>
     </Container>
     </BackgroundContainer>

@@ -5,7 +5,7 @@ import { History } from "../pages/history";
 export function Router() {
   return (
     <Routes>
-      <Route path="/form" element={<Form />} />
+      <Route path="/" element={<Form />} />
       <Route path="/history" element={<History />} />
   </Routes>
   );
