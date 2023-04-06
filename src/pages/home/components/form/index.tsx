@@ -43,6 +43,14 @@ interface CardInformations {
   flag?: string;
 }
 
+interface Cards {
+  id: string;
+  card: number;
+  name: string;
+  validity: string;
+  CVV: number;
+  flag?: string;
+}
 
 function validateExpirationDate(value: string): boolean {
   const regex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/; // regex para validar o formato mm/aa
@@ -87,9 +95,7 @@ const newCardValidationSchema = zod.object({
 });
 
 export function Form() {
-  const {card, setCard} = useContext(useContext)
-  
-  
+  const {card, setCard}: any = useContext(UserContext)
   
   const [cardNumber, setCardNumber] = useState("");
   const [validity, setValidity] = useState("");
@@ -171,7 +177,6 @@ export function Form() {
     }
   }
   console.log(errors);
-  console.log(card);
 
   function handlecreateNewCard(data: any) {
     const flag = validationCard();
@@ -184,7 +189,7 @@ export function Form() {
       flag: flag.toString(),
     };
 
-    setCard((state) => [...state, newCard]);
+    setCard((state: any) => [...state, newCard]);
     validationCard();
     reset();
     setCardNumber("");
@@ -324,10 +329,10 @@ export function Form() {
         </DadosSeguro>
         <ButtonSubmit type="submit">Adicionar cartão</ButtonSubmit>
       </FormContainer>
-      
-      <History />
+  
       </UserContext.Provider>
     </Container>
     </BackgroundContainer>
   );
 }
+

@@ -21,7 +21,7 @@ export function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
-      <UserContext.Provider value={{card}}>
+      <UserContext.Provider value={{card, setCard}}>
         <Router />
         <Home />
         </UserContext.Provider>

@@ -2,12 +2,15 @@ import { useContext } from "react"
 import UserContext from "../../contexts/useContext"
 
 export function History() {
-    const { card } = useContext(UserContext);
-
+    const {card, setCard}: any = useContext(UserContext)
     return (
         <div>
             aa
-            <p>{card}</p>
+            {card.map((item: any) => {
+                return (
+                    <p key={'a'}>{item}</p>
+                )
+            })}
         </div>
     )
 }
