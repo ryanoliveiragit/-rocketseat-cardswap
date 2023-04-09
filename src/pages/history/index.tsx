@@ -11,7 +11,7 @@ export function History() {
 
     return (
         <div>
-            aa
+            aaaa
             {card.map((item: Cards) => {
                 return (
                     <p key={'a'}>{item.id}</p>

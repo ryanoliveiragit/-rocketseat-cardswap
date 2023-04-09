@@ -5,7 +5,7 @@ import { defaultTheme } from "./styles/theme/default";
 import { BrowserRouter } from 'react-router-dom'
 import { Router } from './routes/index'
 import UserContext from "./contexts/useContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { History } from "./pages/history";
 import { Form } from "./pages/home/components/form";
 
@@ -21,7 +21,10 @@ export interface Cards {
 export function App() {
 
   const [card, setCard] = useState<Cards[]>([]);
-  
+
+
+  console.log(card)
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>

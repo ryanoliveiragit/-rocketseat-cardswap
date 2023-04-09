@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
@@ -96,8 +96,21 @@ const newCardValidationSchema = zod.object({
 });
 
 export function Form() {
-
   const {card, setCard}: any = useContext(UserContext);
+
+  useEffect(() => {
+    const storedCard = localStorage.getItem("cardList");
+    if (storedCard !== null) {
+      console.log('caiu')
+      setCard(JSON.parse(storedCard));
+    }
+  }, []);
+
+
+  useEffect(() => {
+    localStorage.setItem("cardList", JSON.stringify(card));
+  }, [card]);
+  console.log(card)
   
   const [cardNumber, setCardNumber] = useState("");
   const [validity, setValidity] = useState("");
@@ -191,7 +204,6 @@ export function Form() {
       flag: flag.toString(),
       setCard: undefined
     };
-
     setCard((state: any) => [...state, newCard]);
     validationCard();
     reset();
@@ -201,6 +213,7 @@ export function Form() {
   }
 
   console.log(card);
+
   return (
     <BackgroundContainer>
     <Container>
