@@ -33,7 +33,6 @@ import sound from "../../../../assets/sound.svg";
 import seguro from "../../../../assets/seguro.svg";
 
 import UserContext from "../../../../contexts/useContext";
-import { History } from "../../../history";
 
 interface CardInformations {
   cardNumber: string;
@@ -41,6 +40,7 @@ interface CardInformations {
   validity: string;
   CVV: number;
   flag?: string;
+  status: string;
 }
 
 interface Cards {
@@ -51,6 +51,7 @@ interface Cards {
   validity: string;
   CVV: number;
   flag?: string;
+  status: string;
 }
 
 function validateExpirationDate(value: string): boolean {
@@ -123,6 +124,7 @@ export function Form() {
       resolver: zodResolver(newCardValidationSchema),
       defaultValues: {
         titularName: "",
+        status: 'online'
       },
     });
 
@@ -197,6 +199,7 @@ export function Form() {
     const flag = validationCard();
     const newCard: Cards = {
       id: String(new Date().getTime()),
+      status: 'online',
       card: data.cardNumber,
       name: data.titularName,
       validity: data.validity,
@@ -212,7 +215,7 @@ export function Form() {
     setCVV(""); // Limpa o campo "cardNumber"
   }
 
-  console.log(card);
+  console.log(status);
 
   return (
     <BackgroundContainer>

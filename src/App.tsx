@@ -10,6 +10,7 @@ import { History } from "./pages/history";
 import { Form } from "./pages/home/components/form";
 
 export interface Cards {
+  status: string;
   id: string;
   card: number;
   setCard: any;
@@ -21,7 +22,6 @@ export interface Cards {
 export function App() {
 
   const [card, setCard] = useState<Cards[]>([]);
-
 
   console.log(card)
 

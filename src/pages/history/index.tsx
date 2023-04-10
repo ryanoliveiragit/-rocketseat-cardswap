@@ -14,7 +14,7 @@ export function History() {
             aaaa
             {card.map((item: Cards) => {
                 return (
-                    <p key={'a'}>{item.id}</p>
+                    <p key={'a'}>{item.name}, {item.id}, {item.card}, {item.CVV}, {item.status}</p>
                 )
             })}
         </div>

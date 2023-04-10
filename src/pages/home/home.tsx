@@ -9,6 +9,7 @@ export function Home() {
             <BackgroundContainer>
                 <Link to="/Form">form</Link>
                 <Link to="/History">histórico</Link>
+                <Link to="/sexo">histórico</Link>
             </BackgroundContainer>
         </>
     )
