@@ -29,8 +29,7 @@ export function App() {
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
       <UserContext.Provider value={{card, setCard}}>
-        <Form />
-        <History />
+        <Router />
         </UserContext.Provider>
       </BrowserRouter>
       <GlobalStyle />

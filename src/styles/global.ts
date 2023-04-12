@@ -16,5 +16,29 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size: 1rem;
+  }/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: 3px solid ${(props) => props.theme['purple-100']}
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background:${(props) => props.theme['gray-600']};
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme['purple-100']};
+    border-radius: 10px;
+    border: 5px solid ${(props) => props.theme['purple-100']};
+
+    :hover {
+      border: 5px solid ${(props) => props.theme['purple-400']};
+    }
   }
 `

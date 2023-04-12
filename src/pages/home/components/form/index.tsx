@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
@@ -33,6 +33,7 @@ import sound from "../../../../assets/sound.svg";
 import seguro from "../../../../assets/seguro.svg";
 
 import UserContext from "../../../../contexts/useContext";
+import {History} from '../../../history'
 
 interface CardInformations {
   cardNumber: string;
@@ -46,6 +47,7 @@ interface CardInformations {
 interface Cards {
   id: string;
   card: number;
+  titularName: string;
   setCard: any;
   name: string;
   validity: string;
@@ -98,15 +100,7 @@ const newCardValidationSchema = zod.object({
 
 export function Form() {
   const {card, setCard}: any = useContext(UserContext);
-
-  useEffect(() => {
-    const storedCard = localStorage.getItem("cardList");
-    if (storedCard !== null) {
-      console.log('caiu')
-      setCard(JSON.parse(storedCard));
-    }
-  }, []);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("cardList", JSON.stringify(card));
@@ -123,8 +117,7 @@ export function Form() {
     useForm<CardInformations>({
       resolver: zodResolver(newCardValidationSchema),
       defaultValues: {
-        titularName: "",
-        status: 'online'
+        status: 'Online'
       },
     });
 
@@ -199,9 +192,10 @@ export function Form() {
     const flag = validationCard();
     const newCard: Cards = {
       id: String(new Date().getTime()),
-      status: 'online',
+      status: 'Online',
       card: data.cardNumber,
       name: data.titularName,
+      titularName: data.titularName,
       validity: data.validity,
       CVV: data.CVV,
       flag: flag.toString(),
@@ -211,11 +205,10 @@ export function Form() {
     validationCard();
     reset();
     setCardNumber("");
-    setName("");
+    setName("")
+    setValidity("");
     setCVV(""); // Limpa o campo "cardNumber"
   }
-
-  console.log(status);
 
   return (
     <BackgroundContainer>
@@ -289,7 +282,6 @@ export function Form() {
             onChange={handleCardNumberChange}
           />
         </InputContainer>
-
         <InputContainerFlex>
           <InputContainer>
             <label>Validade</label>
@@ -311,6 +303,7 @@ export function Form() {
             <div>
               <label>CVV</label>
               <span>?</span>
+
             </div>
             <InputCard
               onClick={() => setIsFlipped(true)}
@@ -337,6 +330,7 @@ export function Form() {
             id="name"
             placeholder="Nome do titular"
             {...register("titularName", {
+              valueAsNumber: false,
               required: "O campo é obrigatório.",
             })}
             onChange={handleNameChange} //Adiciona a função de controle do tamanho máximo de caracteres
@@ -351,6 +345,7 @@ export function Form() {
       </FormContainer>
       </UserContext.Provider>
     </Container>
+    <History />
     </BackgroundContainer>
   );
 }

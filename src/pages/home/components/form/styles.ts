@@ -6,10 +6,12 @@ export const Container = styled.div`
 `
 export const BackgroundContainer = styled.div`
     height: 100%;
-    align-items: center;
+    align-items: flex-start;
     display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 5rem;
+    margin-top: 5rem;
 `
 export const InputCard = styled.input`
   background-color: black;
@@ -64,6 +66,7 @@ export const ButtonSubmit = styled.button`
 
   color: ${(props) => props.theme["gray-50"]};
   font-style: normal;
+  background-color: 5px solid ${(props) => props.theme['purple-100']};
   font-weight: 500;
   font-size: 1rem;
   line-height: 24px;
@@ -71,6 +74,13 @@ export const ButtonSubmit = styled.button`
   background: #a855f7;
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
+
+  transition: 2s;
+
+  :hover {
+    cursor: pointer;
+      background-color: 5px solid ${(props) => props.theme['purple-100']};
+    }
 `;
 
 export const CreditCard = styled.div`
