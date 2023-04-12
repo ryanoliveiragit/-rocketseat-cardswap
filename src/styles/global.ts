@@ -19,6 +19,7 @@ export const GlobalStyle = createGlobalStyle`
   }/* ===== Scrollbar CSS ===== */
   /* Firefox */
   * {
+    list-style: none;
     scrollbar-width: auto;
     scrollbar-color: 3px solid ${(props) => props.theme['purple-100']}
   }

@@ -41,7 +41,6 @@ export const InputCard = styled.input`
   order: 1;
   align-self: stretch;
   flex-grow: 0;
-
   outline: none;
   :focus {
     box-shadow: 0 0 0 2px ${(props) => props.theme["purple-400"]};
@@ -254,25 +253,9 @@ export const ContainerCVV = styled.div`
   padding: 1rem 1rem;
   align-items: flex-end;
   justify-content: flex-end;
-
- /* span {
-    z-index: 5;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    color: ${(props)=> props.theme["gray-900"]};
-    font-weight: 900;
-    padding: 0px;
-
-    width: 8px;
-    height: 8px;
-
-    /* Inside auto layout 
-
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-  }
-  */
 `;
+
+export const Alerta = styled.div`
+  position: absolute;
+  left: 92rem;
+`

@@ -10,6 +10,7 @@ import { History } from "./pages/history";
 import { Form } from "./pages/home/components/form";
 
 export interface Cards {
+  apelido: string;
   status: string;
   id: string;
   card: number;

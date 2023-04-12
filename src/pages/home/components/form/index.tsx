@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 import ReactCardFlip from "react-card-flip";
+import Alert from '@mui/material/Alert';
 
 import { RiErrorWarningLine } from "react-icons/ri";
 import {
@@ -23,6 +24,7 @@ import {
   ContainerCVV,
   Container,
   BackgroundContainer,
+  Alerta
 } from "./styles";
 
 import creaditCard from "../../../../assets/creaditCard.png";
@@ -33,7 +35,7 @@ import sound from "../../../../assets/sound.svg";
 import seguro from "../../../../assets/seguro.svg";
 
 import UserContext from "../../../../contexts/useContext";
-import {History} from '../../../history'
+import { History } from '../../../history'
 
 interface CardInformations {
   cardNumber: string;
@@ -42,6 +44,7 @@ interface CardInformations {
   CVV: number;
   flag?: string;
   status: string;
+  apelido: String;
 }
 
 interface Cards {
@@ -54,6 +57,7 @@ interface Cards {
   CVV: number;
   flag?: string;
   status: string;
+  apelido: String;
 }
 
 function validateExpirationDate(value: string): boolean {
@@ -75,11 +79,12 @@ function validateExpirationDate(value: string): boolean {
     !isNaN(month) && // verifique se month é um número válido
     !isNaN(year) && // verifique se year é um número válido
     value ===
-      `${month.toString().padStart(2, "0")}/${year.toString().padStart(2, "0")}` // formate a string como "mm/aa"
+    `${month.toString().padStart(2, "0")}/${year.toString().padStart(2, "0")}` // formate a string como "mm/aa"
   );
 }
 const newCardValidationSchema = zod.object({
   titularName: zod.string().min(1, "Por favor preencha o campo corretamente"),
+  apelido: zod.string().min(1, "Por favor preencha o campo corretamente"),
   cardNumber: zod
     .number()
     .refine(
@@ -99,19 +104,21 @@ const newCardValidationSchema = zod.object({
 });
 
 export function Form() {
-  const {card, setCard}: any = useContext(UserContext);
+  const { card, setCard }: any = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("cardList", JSON.stringify(card));
   }, [card]);
   console.log(card)
-  
+
   const [cardNumber, setCardNumber] = useState("");
   const [validity, setValidity] = useState("");
   const [cvv, setCVV] = useState("");
   const [name, setName] = useState("");
+  const [apelido, setApelido] = useState("");
   const [isFlipped, setIsFlipped] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const { register, handleSubmit, formState, reset } =
     useForm<CardInformations>({
@@ -177,176 +184,203 @@ export function Form() {
     }
   }
 
-  function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const inputValue = event.target.value;
+  function handleApelidoChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const apelidoValue = event.target.value;
 
-    if (inputValue.length <= 16) {
-      setName(inputValue);
+    if (apelidoValue.length <= 16) {
+      setApelido(apelidoValue);
     } else {
-      setName(inputValue.slice(0, 16));
+      setApelido(apelidoValue.slice(0, 16));
     }
   }
-  console.log(errors);
 
-  function handlecreateNewCard(data: any) {
-    const flag = validationCard();
-    const newCard: Cards = {
-      id: String(new Date().getTime()),
-      status: 'Online',
-      card: data.cardNumber,
-      name: data.titularName,
-      titularName: data.titularName,
-      validity: data.validity,
-      CVV: data.CVV,
-      flag: flag.toString(),
-      setCard: undefined
-    };
-    setCard((state: any) => [...state, newCard]);
-    validationCard();
-    reset();
-    setCardNumber("");
-    setName("")
-    setValidity("");
-    setCVV(""); // Limpa o campo "cardNumber"
+
+function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
+  const inputValue = event.target.value;
+
+  if (inputValue.length <= 16) {
+    setName(inputValue);
+  } else {
+    setName(inputValue.slice(0, 16));
   }
+}
+console.log(errors);
 
-  return (
-    <BackgroundContainer>
+function handlecreateNewCard(data: any) {
+  const flag = validationCard();
+  const newCard: Cards = {
+    id: String(new Date().getTime()),
+    status: 'Online',
+    card: data.cardNumber,
+    name: data.titularName,
+    titularName: data.titularName,
+    validity: data.validity,
+    CVV: data.CVV,
+    flag: flag.toString(),
+    setCard: undefined,
+    apelido: data.apelido
+  };
+  setShowAlert(true);
+  setTimeout(() => setShowAlert(false), 3000);
+  setCard((state: any) => [...state, newCard]);
+  validationCard();
+  reset();
+  setCardNumber("");
+  setName("")
+  setValidity("");
+  setApelido("")
+  setCVV(""); // Limpa o campo "cardNumber"
+}
+
+return (
+  <BackgroundContainer>
     <Container>
-      <UserContext.Provider value={{card}}>
-      <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
-        <div>
-          <CreditCard>
-            <img src={creaditCard} alt="creditCard" />
-            <Number>
-              {cardNumber !== "" ? cardNumber : <span className="placeholder">{placeholderNumber}</span>}
-            </Number>
-            <Name> {name !== "" ? name : <span className="placeholder">{placeholderName}</span>}</Name>
-            <Validity>{validity !== "" ? validity : <span className="placeholder">{placeholderValidity}</span>}</Validity>
-            <div>
-              <FlagCard>
-                {flag === "Visa" ? (
-                  <img src={flagVisa} alt="flag" />
-                ) : flag === "Mastercard" ? (
-                  <img src={flagMastercard} alt="flagMaster" />
-                ) : flag === "ELO" ? (
-                  <img src={flagElo} alt="flagElo" />
-                ) : (
-                  <RiErrorWarningLine size={24} fill={"#FB7185"} />
-                )}
-              </FlagCard>
-              <Sound>
-                <img src={sound} alt="flagSound" />
-              </Sound>
-            </div>
-          </CreditCard>
-        </div>
-        <div onClick={() => setIsFlipped(!isFlipped)}>
-          <CreditCard>
-            <img src={creaditCard} alt="creditCard" />
-            <div>
-              <FlagCard>
-                {flag === "Visa" ? (
-                  <img src={flagVisa} alt="flag" />
-                ) : flag === "Mastercard" ? (
-                  <img src={flagMastercard} alt="flagMaster" />
-                ) : flag === "ELO" ? (
-                  <img src={flagElo} alt="flagElo" />
-                ) : (
-                  <RiErrorWarningLine size={24} fill={"#FB7185"} />
-                )}
-              </FlagCard>
-              <Reader />
-              <ContainerCVV>
-              <CVV>{cvv.replace(/./g, "*")}</CVV>
-              </ContainerCVV>
-              <h2>CVV</h2>
-            </div>
-          </CreditCard>
-        </div>
-      </ReactCardFlip>
-      <FormContainer onSubmit={handleSubmit(handlecreateNewCard)}>
-        <div onClick={() => setIsFlipped(!isFlipped)}></div>
-        <InputContainer>
-          <label>Número do cartão</label>
-          <InputCard
-            onClick={() => setIsFlipped(false)}
-            value={cardNumber}
-            id="card"
-            placeholder={placeholderNumber}
-            {...register("cardNumber", {
-              valueAsNumber: true,
-              required: "O campo é obrigatório.",
-              maxLength: 16, // limite máximo de caracteres
-            })}
-            onChange={handleCardNumberChange}
-          />
-        </InputContainer>
-        <InputContainerFlex>
+      <UserContext.Provider value={{ card }}>
+        <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
+          <div>
+            <CreditCard>
+              <img src={creaditCard} alt="creditCard" />
+              <Number>
+                {cardNumber !== "" ? cardNumber : <span className="placeholder">{placeholderNumber}</span>}
+              </Number>
+              <Name> {name !== "" ? name : <span className="placeholder">{placeholderName}</span>}</Name>
+              <Validity>{validity !== "" ? validity : <span className="placeholder">{placeholderValidity}</span>}</Validity>
+              <div>
+                <FlagCard>
+                  {flag === "Visa" ? (
+                    <img src={flagVisa} alt="flag" />
+                  ) : flag === "Mastercard" ? (
+                    <img src={flagMastercard} alt="flagMaster" />
+                  ) : flag === "ELO" ? (
+                    <img src={flagElo} alt="flagElo" />
+                  ) : (
+                    <RiErrorWarningLine size={24} fill={"#FB7185"} />
+                  )}
+                </FlagCard>
+                <Sound>
+                  <img src={sound} alt="flagSound" />
+                </Sound>
+              </div>
+            </CreditCard>
+          </div>
+          <div onClick={() => setIsFlipped(!isFlipped)}>
+            <CreditCard>
+              <img src={creaditCard} alt="creditCard" />
+              <div>
+                <FlagCard>
+                  {flag === "Visa" ? (
+                    <img src={flagVisa} alt="flag" />
+                  ) : flag === "Mastercard" ? (
+                    <img src={flagMastercard} alt="flagMaster" />
+                  ) : flag === "ELO" ? (
+                    <img src={flagElo} alt="flagElo" />
+                  ) : (
+                    <RiErrorWarningLine size={24} fill={"#FB7185"} />
+                  )}
+                </FlagCard>
+                <Reader />
+                <ContainerCVV>
+                  <CVV>{cvv.replace(/./g, "*")}</CVV>
+                </ContainerCVV>
+                <h2>CVV</h2>
+              </div>
+            </CreditCard>
+          </div>
+        </ReactCardFlip>
+        <FormContainer onSubmit={handleSubmit(handlecreateNewCard)}>
+          <div onClick={() => setIsFlipped(!isFlipped)}></div>
           <InputContainer>
-            <label>Validade</label>
+            <label>Número do cartão</label>
             <InputCard
               onClick={() => setIsFlipped(false)}
-              id="validity"
-              placeholder={placeholderValidity}
-              {...register("validity", {
-                required: "O campo é obrigatório.",
-                maxLength: 5, // limite máximo de caracteres
-                valueAsNumber: false,
-              })}
-              maxLength={5}
-              onChange={handleValidityChange}
-            ></InputCard>
-          </InputContainer>
-
-          <InputContainer>
-            <div>
-              <label>CVV</label>
-              <span>?</span>
-
-            </div>
-            <InputCard
-              onClick={() => setIsFlipped(true)}
-              id="CVV"
-              placeholder="***"
-              type="password"
-              
-              {...register("CVV", {
+              value={cardNumber}
+              id="card"
+              placeholder={placeholderNumber}
+              {...register("cardNumber", {
                 valueAsNumber: true,
                 required: "O campo é obrigatório.",
+                maxLength: 16, // limite máximo de caracteres
               })}
-              value={cvv}
-              onChange={handleCvvChange}
-              maxLength={3}
+              onChange={handleCardNumberChange}
+            />
+            <InputContainer>
+            <InputCard
+              onClick={() => setIsFlipped(false)}
+              value={apelido}
+              id="apelido"
+              placeholder="Apelido do cartão"
+              {...register("apelido", {
+                valueAsNumber: false,
+                required: "O campo é obrigatório.",
+              })}
+              onChange={handleApelidoChange} //Adiciona a função de controle do tamanho máximo de caracteres
             />
           </InputContainer>
-        </InputContainerFlex>
+          </InputContainer>
+          <InputContainerFlex>
+            <InputContainer>
+              <label>Validade</label>
+              <InputCard
+                onClick={() => setIsFlipped(false)}
+                id="validity"
+                placeholder={placeholderValidity}
+                {...register("validity", {
+                  required: "O campo é obrigatório.",
+                  maxLength: 5, // limite máximo de caracteres
+                  valueAsNumber: false,
+                })}
+                maxLength={5}
+                onChange={handleValidityChange}
+              ></InputCard>
+            </InputContainer>
 
-        <InputContainer>
-          <label>Nome do titular</label>
-          <InputCard
-            onClick={() => setIsFlipped(false)}
-            value={name}
-            id="name"
-            placeholder="Nome do titular"
-            {...register("titularName", {
-              valueAsNumber: false,
-              required: "O campo é obrigatório.",
-            })}
-            onChange={handleNameChange} //Adiciona a função de controle do tamanho máximo de caracteres
-          />
-        </InputContainer>
+            <InputContainer>
+              <div>
+                <label>CVV</label>
+                <span>?</span>
+              </div>
+              <InputCard
+                onClick={() => setIsFlipped(true)}
+                id="CVV"
+                placeholder="***"
+                type="password"
 
-        <DadosSeguro>
-          <img src={seguro} alt="" />
-          <p>Seus dados estão seguros</p>
-        </DadosSeguro>
-        <ButtonSubmit type="button" onClick={handleSubmit(handlecreateNewCard)}>Adicionar cartão</ButtonSubmit>
-      </FormContainer>
+                {...register("CVV", {
+                  valueAsNumber: true,
+                  required: "O campo é obrigatório.",
+                })}
+                value={cvv}
+                onChange={handleCvvChange}
+                maxLength={3}
+              />
+            </InputContainer>
+          </InputContainerFlex>
+
+          <InputContainer>
+            <label>Nome do titular</label>
+            <InputCard
+              onClick={() => setIsFlipped(false)}
+              value={name}
+              id="name"
+              placeholder="Nome do titular"
+              {...register("titularName", {
+                valueAsNumber: false,
+                required: "O campo é obrigatório.",
+              })}
+              onChange={handleNameChange} //Adiciona a função de controle do tamanho máximo de caracteres
+            />
+          </InputContainer>
+          <DadosSeguro>
+            <img src={seguro} alt="" />
+            <p>Seus dados estão seguros</p>
+          </DadosSeguro>
+          <ButtonSubmit type="button" onClick={handleSubmit(handlecreateNewCard)}>Adicionar cartão</ButtonSubmit>
+        </FormContainer>
       </UserContext.Provider>
     </Container>
     <History />
-    </BackgroundContainer>
-  );
+    {showAlert && <Alerta><Alert severity="success">Novo cartão adicionado!</Alert></Alerta>}
+  </BackgroundContainer>
+);
 }
 
