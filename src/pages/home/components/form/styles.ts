@@ -11,7 +11,7 @@ export const BackgroundContainer = styled.div`
     justify-content: center;
     flex-direction: row;
     gap: 5rem;
-    margin-top: 5rem;
+    margin-top: 2rem;
 `
 export const InputCard = styled.input`
   background-color: black;
