@@ -6,7 +6,7 @@ Formulário de cartão de crédio, onde o usuário pode adicionar seu cartão.
 
 <p align="center">
   <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="https://coffe-delivery-rose.vercel.app/">Projeto</a>
+  <a href="boracodar13-seven.vercel.app">Projeto</a>
 </p>
 
 <br>
